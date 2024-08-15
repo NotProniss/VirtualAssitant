@@ -1,5 +1,6 @@
 import pyttsx3
 import speech_recognition as sr
+from playsound import playsound as ps
 #from nicegui import ui
 
 import Moduals.wiki as wiki
@@ -20,6 +21,7 @@ def takeCommand():
 	# to listen for a command
 	with sr.Microphone() as source:
 		print('Listening')
+		ps('Data/sfx/start_speaking.mp3')
 		#ui.label('Listening')
 		# seconds of non-speaking audio before 
 		# a phrase is considered complete
@@ -32,6 +34,7 @@ def takeCommand():
 		# handling
 		try:
 			print("Recognizing")
+			ps('Data/sfx/stop_speaking.mp3')
 			#ui.label('Recognizing')
 			
 			# for Listening the command in indian
@@ -66,14 +69,30 @@ def speak(audio):
 	# queued commands
 	engine.runAndWait()
 
-def Hello():
+def hello():
 	
 	# This function is an intro fuction for startup.
-	speak("hello, I am your desktop assistant. \
+	ps('Data/sfx/greeting.mp3')
+	speak("hello, I'm Q your desktop assistant. \
 		How may I help you")
 
+#### Attempting to set up an "always listening" feature that starts ###
+#### the takeQuery command with an "ok google" like thing ####
+'''def main():
+	while(True):
+		start = takeCommand().lower()
+		if "lucy" in start:
+			takeQuery()
+			continue
+		elif "exit" or "quit" or "bye" in start:
+			speak('Goodbye')
+			ps('Data/sfx/goodbye.mp3')
+			exit()
+		else:
+			continue'''
+#########################################################################
 
-def Take_query():
+def takeQuery():
 
 	# This loop is infinite as it will take
 	# our queries continuously until and unless
@@ -99,11 +118,6 @@ def Take_query():
 			speak(tTime.tellTime())
 			continue
 		
-		# this will exit and terminate the program
-		elif "bye" in query:
-			speak("Bye.")
-			exit()
-		
 		elif "from wikipedia" in query:
 			
 			# if any one wants to have a information
@@ -111,9 +125,11 @@ def Take_query():
 			speak("Checking the wikipedia ")
 			speak(wiki.Wikipedia(query))
 			speak("According to wikipedia")
+			continue
 		
 		elif "tell me your name" in query:
-			speak("I am Jarvis. Your desktop Assistant")
+			speak("I am Q. Your desktop Assistant")
+			continue
 		
 		elif 'imdb' in query:
 			speak('would you like me to search IMDB?')
@@ -127,6 +143,11 @@ def Take_query():
 				speak('Alright I wont')
 				continue
 
+		elif "bye" in query:
+			speak('Goodbye')
+			ps('Data/sfx/goodbye.mp3')
+			exit()
+
 
 #ui.button('Click to speak', on_click=lambda: Take_query())
 
@@ -136,5 +157,5 @@ if __name__ in {"__main__", "__mp_main__"}:
 	# ui.run()
 	# calling the Hello function for 
 	# making it more interactive
-	Hello()
-	Take_query()
+	hello()
+	takeQuery()

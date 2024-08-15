@@ -1,11 +1,11 @@
 import pyttsx3
 import speech_recognition as sr
-import webbrowser
 #from nicegui import ui
 
 import Moduals.wiki as wiki
 import Moduals.time as tTime
-
+import Moduals.google as google
+import Moduals.imdb_lu as imdb
 
 # this method is for taking the commands
 # and recognizing the command from the
@@ -88,7 +88,7 @@ def Take_query():
 		query = takeCommand().lower()	
 		if "open google" in query:
 			speak("Opening Google ")
-			webbrowser.open("www.google.com")
+			google.open_google()
 			continue
 			
 		elif "what day is it" in query:
@@ -114,6 +114,19 @@ def Take_query():
 		
 		elif "tell me your name" in query:
 			speak("I am Jarvis. Your desktop Assistant")
+		
+		elif 'imdb' in query:
+			speak('would you like me to search IMDB?')
+			query = takeCommand().lower()
+			if 'yes' in query:
+				speak('search for what exactly?')
+				query = takeCommand().lower()
+				imdb.search_movie(query)
+				continue
+			else:
+				speak('Alright I wont')
+				continue
+
 
 #ui.button('Click to speak', on_click=lambda: Take_query())
 

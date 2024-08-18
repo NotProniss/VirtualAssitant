@@ -1,12 +1,12 @@
 import pyttsx3
 import speech_recognition as sr
+import asyncio
 from playsound import playsound as ps
-#from nicegui import ui
-
 import Moduals.wiki as wiki
 import Moduals.time as tTime
 import Moduals.google as google
 import Moduals.imdb_lu as imdb
+import Moduals.weather as weather
 
 # this method is for taking the commands
 # and recognizing the command from the
@@ -128,7 +128,7 @@ def takeQuery():
 			continue
 		
 		elif "tell me your name" in query:
-			speak("I am Q. Your desktop Assistant")
+			speak("I am Lucy. Your desktop Assistant")
 			continue
 		
 		elif 'imdb' in query:
@@ -142,6 +142,19 @@ def takeQuery():
 			else:
 				speak('Alright I wont')
 				continue
+		
+		elif 'what\'s the weather' in query:
+			now_temp, now_dateTime, now_desc, now_feelsLike, now_humd,\
+      		now_precip, now_press, loc, region, country, now_uv, now_vis,\
+      		now_wind, daily_date, daily_high, daily_low, hour_desc, hour_dew,\
+      		hour_feelsLike, hour_hum, hour_overcast, hour_precipitation,\
+      		hour_rain, hour_snow, hour_sun, hour_temp, hour_thunder, hour_uv,\
+      		hour_vis, hour_wind, hour_windChill, hour_windDir, hour_windGust,\
+      		hour_windSpeed, hour_cloud, hour_time = asyncio.run(weather.getWeather())
+			
+			speak(f'In {loc} {region}, it is {now_temp} {now_desc}, but it\
+		  {now_feelsLike}')
+			continue
 
 		elif "bye" in query:
 			speak('Goodbye')
